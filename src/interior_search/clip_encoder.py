@@ -4,6 +4,7 @@ import numpy as np
 import open_clip
 import torch
 from PIL import Image
+from PIL.Image import Image as PilImage
 
 
 class ClipEncoder:
@@ -27,8 +28,17 @@ class ClipEncoder:
     @torch.inference_mode()
     def encode_images(self, image_paths: list[Path]) -> np.ndarray:
         images = [self._load_image(path) for path in image_paths]
-        image_tensor = torch.stack(images).to(self.device)
+        return self._encode_image_tensors(images)
 
+    @torch.inference_mode()
+    def encode_pil_image(self, image: PilImage) -> np.ndarray:
+        image_tensor = self.preprocess(image.convert("RGB"))
+        features = self._encode_image_tensors([image_tensor])
+        return features[0]
+
+    @torch.inference_mode()
+    def _encode_image_tensors(self, images: list[torch.Tensor]) -> np.ndarray:
+        image_tensor = torch.stack(images).to(self.device)
         features = self.model.encode_image(image_tensor)
         features = torch.nn.functional.normalize(features, dim=-1)
         return features.cpu().numpy().astype(np.float32)
@@ -43,4 +53,3 @@ class ClipEncoder:
     def _load_image(self, path: Path) -> torch.Tensor:
         with Image.open(path) as image:
             return self.preprocess(image.convert("RGB"))
-

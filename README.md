@@ -11,10 +11,13 @@ Type a query like:
 
 This projects embeds images and text into the same vector space, then ranks images by cosine similarity.
 
+You can also upload an image and search for visually similar interiors.
+
 ## What's Included
 
 - Local image dataset
 - PyTorch/OpenCLIP image and text embeddings
+- Text-to-image and image-to-image search
 - NumPy cosine-similarity search
 - Streamlit search app
 
@@ -75,4 +78,5 @@ Whenever you add or remove images, rebuild the index.
 1. `scripts/build_index.py` loads each image and runs it through CLIP's image encoder.
 2. The normalized image embeddings are saved to `data/index/interior_clip.npz`.
 3. `app.py` encodes your text query with CLIP's text encoder.
-4. The app ranks images by dot product, which is cosine similarity because both vectors are normalized.
+4. For image search, `app.py` encodes your uploaded image with CLIP's image encoder.
+5. The app ranks images by dot product, which is cosine similarity because both vectors are normalized.
