@@ -159,7 +159,7 @@ def file_path_url(commons_file: str, width: int) -> str:
 def download(url: str, output_path: Path) -> None:
     request = urllib.request.Request(
         url,
-        headers={"User-Agent": "InteriorLens/0.1 (starter image downloader)"},
+        headers={"User-Agent": "InteriorStyle/0.1 (starter image downloader)"},
     )
     last_error: Exception | None = None
     for attempt in range(2):
