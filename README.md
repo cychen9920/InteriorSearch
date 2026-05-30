@@ -1,4 +1,4 @@
-# InteriorLens
+# InteriorSearch
 
 Search for interior design inspiration images using a pretrained PyTorch CLIP model.
 
