@@ -1,3 +1,5 @@
+import csv
+import html
 from pathlib import Path
 
 import streamlit as st
@@ -8,6 +10,7 @@ from interior_search.search_index import SearchIndex
 
 
 DEFAULT_INDEX_PATH = "data/index/interior_clip.npz"
+DEFAULT_CREDITS_PATH = "data/image_credits.csv"
 EXAMPLE_QUERIES = [
     "warm wood kitchen",
     "modern living room",
@@ -26,6 +29,25 @@ def load_index(index_path: str) -> SearchIndex:
     return SearchIndex.load(index_path)
 
 
+@st.cache_data
+def load_credits(credits_path: str) -> dict[str, dict[str, str]]:
+    path = Path(credits_path)
+    if not path.exists():
+        return {}
+
+    with path.open(newline="") as csv_file:
+        reader = csv.DictReader(csv_file)
+        return {
+            row["filename"]: {
+                "source_page": row.get("source_page", ""),
+                "credit": row.get("credit", ""),
+                "license": row.get("license", ""),
+            }
+            for row in reader
+            if row.get("filename")
+        }
+
+
 def apply_theme() -> None:
     st.markdown(
         """
@@ -36,7 +58,7 @@ def apply_theme() -> None:
             --mint: #e9f4ef;
             --lavender: #eee9fb;
             --ink: #3f3a3a;
-            --muted: #847a7a;
+            --muted: #445e47;
             --line: #eadfda;
         }
 
@@ -59,7 +81,7 @@ def apply_theme() -> None:
         .stApp button,
         .stApp input,
         .stApp textarea {
-            font-family: "Trebuchet MS", "Avenir Next", Avenir, system-ui, sans-serif !important;
+            font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif !important;
         }
 
         section[data-testid="stSidebar"] {
@@ -190,6 +212,25 @@ def apply_theme() -> None:
             padding: 0.17rem 0.48rem;
         }
 
+        .credit-line {
+            border-top: 1px solid rgba(234, 223, 218, 0.75);
+            color: var(--muted);
+            font-size: 0.75rem;
+            line-height: 1.25;
+            margin-top: 0.45rem;
+            padding: 0.5rem 0.15rem 0.05rem;
+        }
+
+        .credit-line a {
+            color: #445e47;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .credit-line a:hover {
+            text-decoration: underline;
+        }
+
         .query-preview {
             background: rgba(255, 255, 255, 0.72);
             border: 1px solid var(--line);
@@ -202,7 +243,7 @@ def apply_theme() -> None:
     )
 
 
-def render_results(results: list[dict]) -> None:
+def render_results(results: list[dict], credits: dict[str, dict[str, str]]) -> None:
     if not results:
         st.warning("No results found.")
         return
@@ -215,6 +256,7 @@ def render_results(results: list[dict]) -> None:
     columns = st.columns(4)
     for i, result in enumerate(results):
         path = Path(result["path"])
+        credit = credits.get(path.name)
         with columns[i % len(columns)]:
             st.markdown('<div class="result-card">', unsafe_allow_html=True)
             st.image(str(path), use_container_width=True)
@@ -227,7 +269,27 @@ def render_results(results: list[dict]) -> None:
                 """,
                 unsafe_allow_html=True,
             )
+            if credit:
+                st.markdown(format_credit_line(credit), unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
+
+
+def format_credit_line(credit: dict[str, str]) -> str:
+    credit_text = html.escape(credit.get("credit") or "Unknown source")
+    license_text = html.escape(credit.get("license") or "License unknown")
+    source_page = html.escape(credit.get("source_page") or "")
+
+    if source_page:
+        source = f'<a href="{source_page}" target="_blank" rel="noopener noreferrer">Source</a>'
+    else:
+        source = "Source unavailable"
+
+    return (
+        '<div class="credit-line">'
+        f"{source} · {credit_text}<br>"
+        f"{license_text}"
+        "</div>"
+    )
 
 
 st.set_page_config(page_title="InteriorStyle", layout="wide")
@@ -244,6 +306,7 @@ st.markdown(
 )
 
 index_path = st.sidebar.text_input("Index path", DEFAULT_INDEX_PATH)
+credits_path = st.sidebar.text_input("Credits path", DEFAULT_CREDITS_PATH)
 top_k = st.sidebar.slider("Results", min_value=4, max_value=24, value=12, step=4)
 
 if not Path(index_path).exists():
@@ -255,6 +318,7 @@ if not Path(index_path).exists():
 
 encoder = load_encoder()
 index = load_index(index_path)
+credits = load_credits(credits_path)
 
 text_tab, image_tab = st.tabs(["Text search", "Image search"])
 
@@ -281,7 +345,7 @@ with text_tab:
             query_embedding = encoder.encode_text(query)
             results = index.search(query_embedding, top_k=top_k)
 
-        render_results(results)
+        render_results(results, credits)
 
 with image_tab:
     uploaded_file = st.file_uploader(
@@ -304,4 +368,4 @@ with image_tab:
             results = index.search(query_embedding, top_k=top_k)
 
         with right:
-            render_results(results)
+            render_results(results, credits)

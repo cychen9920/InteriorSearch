@@ -19,6 +19,7 @@ You can also upload an image and search for visually similar interiors.
 - PyTorch/OpenCLIP image and text embeddings
 - Text-to-image and image-to-image search
 - NumPy cosine-similarity search
+- Source and license details for starter images
 - Streamlit search app
 
 CPU-friendly (no GPU required).
