@@ -1,0 +1,13 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+
+data/images/*
+!data/images/.gitkeep
+data/index/*
+!data/index/.gitkeep
+data/unsplash/
+data/mit-indoor-scenes/
+*.zip
+DATASETS.md

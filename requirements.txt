@@ -1,0 +1,7 @@
+numpy>=1.26
+open-clip-torch>=2.24
+pillow>=10.0
+streamlit>=1.36
+torch>=2.2
+tqdm>=4.66
+

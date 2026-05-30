@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/interior_lens.egg-info/PKG-INFO
+src/interior_lens.egg-info/SOURCES.txt
+src/interior_lens.egg-info/dependency_links.txt
+src/interior_lens.egg-info/top_level.txt
+src/interior_search/__init__.py
+src/interior_search/clip_encoder.py
+src/interior_search/image_files.py
+src/interior_search/search_index.py
