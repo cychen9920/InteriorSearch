@@ -31,14 +31,26 @@ pip install -e .
 
 ## Add Images
 
-Put your interior-design images in:
+This project uses whatever images are in:
 
 ```text
 data/images/
 ```
 
-This version uses whatever images are in that folder. Later, you can replace or
-expand them with images from an open-source dataset.
+To download a small real-image starter set from Wikimedia Commons:
+
+```bash
+python scripts/download_starter_images.py --output-dir data/images --overwrite
+```
+
+That command also writes image attribution details to:
+
+```text
+data/image_credits.csv
+```
+
+Later, you can replace or expand `data/images/` with images from a larger
+open-source dataset.
 
 ## Build the Index
 
