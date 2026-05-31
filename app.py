@@ -53,18 +53,21 @@ def apply_theme() -> None:
         """
         <style>
         :root {
-            --cream: #baccbc;
-            --blush: #f8e8e8;
-            --mint: #e9f4ef;
-            --lavender: #eee9fb;
-            --ink: #3f3a3a;
-            --muted: #445e47;
-            --line: #eadfda;
+            --sage-bg: #baccbc;
+            --panel: #fbf7ef;
+            --panel-soft: #f6efe4;
+            --blush: #f4cfc9;
+            --blush-soft: #f9e4df;
+            --clay: #b98f7e;
+            --clay-soft: #d9b9aa;
+            --deep-green: #2f4a34;
+            --muted-green: #445e47;
+            --line: #d7b9a8;
         }
 
         .stApp {
-            background: var(--cream);
-            color: var(--ink);
+            background: var(--sage-bg);
+            color: var(--deep-green);
         }
 
         html,
@@ -85,22 +88,28 @@ def apply_theme() -> None:
         }
 
         section[data-testid="stSidebar"] {
-            background: rgba(255, 255, 255, 0.45);
-            border-right: 1px solid var(--line);
+            background: rgba(251, 247, 239, 0.72);
+            border-right: 1px solid rgba(185, 143, 126, 0.48);
         }
 
         .block-container {
-            padding-top: 2rem;
+            padding-top: 2.6rem;
             max-width: 1180px;
         }
 
         .hero {
+            background: rgba(251, 247, 239, 0.58);
+            border: 1px solid rgba(185, 143, 126, 0.32);
+            border-radius: 28px;
+            box-shadow: 0 22px 60px rgba(47, 74, 52, 0.09);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
             text-align: center;
-            padding: 1.25rem 0 1.6rem;
+            padding: 1.6rem 1.5rem 1.75rem;
         }
 
         .hero h1 {
-            color: var(--ink);
+            color: var(--deep-green);
             font-size: 3.1rem;
             font-weight: 760;
             letter-spacing: 0;
@@ -108,50 +117,51 @@ def apply_theme() -> None:
         }
 
         .hero p {
-            color: var(--muted);
+            color: var(--muted-green);
             font-size: 1.05rem;
             margin: 0.45rem auto 0;
             max-width: 44rem;
         }
 
         div[data-testid="stTabs"] button {
-            color: var(--muted);
+            color: var(--muted-green);
             font-weight: 650;
         }
 
         div[data-testid="stTabs"] button[aria-selected="true"] {
-            color: var(--ink);
+            color: var(--deep-green);
         }
 
         div[data-testid="stTextInput"] input {
             border-radius: 999px;
             border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.86);
+            background: rgba(251, 247, 239, 0.92);
+            color: var(--deep-green);
             padding-left: 1rem;
         }
 
         div[data-testid="stFileUploader"] section {
-            background: rgba(255, 255, 255, 0.74);
-            border: 1px dashed #d6c7c2;
+            background: rgba(251, 247, 239, 0.78);
+            border: 1px dashed var(--clay);
             border-radius: 18px;
         }
 
         div.stButton > button {
             border-radius: 999px;
-            border: 1px solid #e3d2cf;
-            background: rgba(255, 255, 255, 0.7);
-            color: var(--ink);
+            border: 1px solid rgba(185, 143, 126, 0.58);
+            background: rgba(251, 247, 239, 0.78);
+            color: var(--deep-green);
             padding: 0.35rem 0.9rem;
         }
 
         div.stButton > button:hover {
-            border-color: #cfaaa7;
-            color: var(--ink);
-            background: #fff4f0;
+            border-color: var(--clay);
+            color: var(--deep-green);
+            background: var(--blush-soft);
         }
 
         .section-label {
-            color: var(--muted);
+            color: var(--muted-green);
             font-size: 0.88rem;
             font-weight: 700;
             margin: 0.8rem 0 0.35rem;
@@ -159,19 +169,30 @@ def apply_theme() -> None:
         }
 
         .score-note {
-            color: var(--muted);
+            background: rgba(251, 247, 239, 0.48);
+            border: 1px solid rgba(185, 143, 126, 0.28);
+            border-radius: 999px;
+            color: var(--muted-green);
+            display: inline-block;
             font-size: 0.88rem;
             margin: 0.1rem 0 1rem;
+            padding: 0.32rem 0.75rem;
         }
 
         .result-card {
-            background: rgba(255, 255, 255, 0.82);
-            border: 1px solid rgba(234, 223, 218, 0.95);
+            background: rgba(251, 247, 239, 0.9);
+            border: 1px solid rgba(185, 143, 126, 0.42);
             border-radius: 18px;
-            box-shadow: 0 14px 35px rgba(97, 75, 61, 0.08);
+            box-shadow: 0 16px 38px rgba(47, 74, 52, 0.12);
             margin-bottom: 1.1rem;
             overflow: hidden;
             padding: 0.55rem;
+            transition: transform 160ms ease, box-shadow 160ms ease;
+        }
+
+        .result-card:hover {
+            box-shadow: 0 22px 48px rgba(47, 74, 52, 0.16);
+            transform: translateY(-2px);
         }
 
         .result-card img {
@@ -192,7 +213,7 @@ def apply_theme() -> None:
         }
 
         .result-name {
-            color: var(--ink);
+            color: var(--deep-green);
             font-size: 0.86rem;
             font-weight: 650;
             line-height: 1.2;
@@ -202,10 +223,10 @@ def apply_theme() -> None:
         }
 
         .score-badge {
-            background: var(--lavender);
-            border: 1px solid rgba(207, 197, 231, 0.8);
+            background: var(--blush-soft);
+            border: 1px solid var(--blush);
             border-radius: 999px;
-            color: #5d5570;
+            color: var(--deep-green);
             flex: 0 0 auto;
             font-size: 0.76rem;
             font-weight: 700;
@@ -213,8 +234,8 @@ def apply_theme() -> None:
         }
 
         .credit-line {
-            border-top: 1px solid rgba(234, 223, 218, 0.75);
-            color: var(--muted);
+            border-top: 1px solid rgba(185, 143, 126, 0.28);
+            color: var(--muted-green);
             font-size: 0.75rem;
             line-height: 1.25;
             margin-top: 0.45rem;
@@ -222,7 +243,7 @@ def apply_theme() -> None:
         }
 
         .credit-line a {
-            color: #445e47;
+            color: var(--deep-green);
             font-weight: 700;
             text-decoration: none;
         }
@@ -232,10 +253,17 @@ def apply_theme() -> None:
         }
 
         .query-preview {
-            background: rgba(255, 255, 255, 0.72);
+            background: rgba(251, 247, 239, 0.82);
             border: 1px solid var(--line);
             border-radius: 18px;
             padding: 0.75rem;
+        }
+
+        div[data-testid="stAlert"] {
+            background: rgba(251, 247, 239, 0.68);
+            border: 1px solid rgba(185, 143, 126, 0.35);
+            border-radius: 16px;
+            color: var(--deep-green);
         }
         </style>
         """,
